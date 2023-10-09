@@ -29,12 +29,19 @@ def atualizar_tabela():
     racaCor_selecionado = combo_racaCor.get()
     idade_selecionado = combo_idade.get()
 
+    # Converter idade_selecionado para float (ou int, dependendo dos seus dados)
+    idade_selecionado = float(idade_selecionado)
+
     # Aplicar os filtros ao DataFrame
     filtro_sintomas = df['sintomas'] == sintomas_selecionados
     filtro_profissional_saude = df['profissionalSaude'] == profissional_saude_selecionado
     filtro_racaCor = df['racaCor'] == racaCor_selecionado
     filtro_idade = df['idade'] == idade_selecionado
+
     resultados_filtrados = df[filtro_sintomas & filtro_profissional_saude & filtro_racaCor & filtro_idade]
+
+    #print("Número de resultados encontrados:", len(resultados_filtrados))
+    
 
     # Limpar a tabela existente
     for i in tree.get_children():
@@ -79,23 +86,31 @@ df = df.explode('profissionalSaude')
 df = df.explode('racaCor')
 
 # Crie as ComboBox para seleção de filtros
-sintomas = df['sintomas'].values.tolist()
-combo_sintomas = ttk.Combobox(root, values=sintomas, state="readonly")
+#sintomas = df['sintomas'].values.tolist()
+#combo_sintomas = ttk.Combobox(root, values=sintomas, state="readonly")
+sintomas_unicos = set(df['sintomas'].values.tolist())
+combo_sintomas = ttk.Combobox(root, values=list(sintomas_unicos), state="readonly")
 combo_sintomas.set("Selecione um sintoma")
 combo_sintomas.grid(row=0, column=0, sticky="e")
 
-profissionais_saude = df['profissionalSaude'].unique()
-combo_profissional_saude = ttk.Combobox(root, values=profissionais_saude, state="readonly")
+#profissionais_saude = df['profissionalSaude'].unique()
+#combo_profissional_saude = ttk.Combobox(root, values=profissionais_saude, state="readonly")
+profissional_saude_unicos = set(df['profissionalSaude'].values.tolist())
+combo_profissional_saude = ttk.Combobox(root, values=list(profissional_saude_unicos), state="readonly")
 combo_profissional_saude.set("Selecione um profissional de saúde")
 combo_profissional_saude.grid(row=0, column=1, sticky="e")
 
-racaCor = df['racaCor'].unique()
-combo_racaCor = ttk.Combobox(root, values=racaCor, state="readonly")
+# racaCor = df['racaCor'].unique()
+# combo_racaCor = ttk.Combobox(root, values=racaCor, state="readonly")
+racaCor_unicos = set(df['racaCor'].values.tolist())
+combo_racaCor = ttk.Combobox(root, values=list(racaCor_unicos), state="readonly")
 combo_racaCor.set("Selecione uma Raça/Cor")
 combo_racaCor.grid(row=0, column=3, sticky="w")
 
-idade = df['idade'].unique()
-combo_idade = ttk.Combobox(root, values=idade, state="readonly")
+# idade = df['idade'].unique()
+# combo_idade = ttk.Combobox(root, values=idade, state="readonly")
+idade_unicos = set(df['idade'].values.tolist())
+combo_idade = ttk.Combobox(root, values=list(idade_unicos), state="readonly")
 combo_idade.set("Selecione uma Idade")
 combo_idade.grid(row=0, column=4, sticky="w")
 
@@ -119,3 +134,4 @@ for index, row in df.iterrows():
     tree.insert("", "end", values=(row['sintomas'], row['profissionalSaude'], row['racaCor'], row['idade']))
 
 root.mainloop()
+
