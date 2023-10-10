@@ -21,6 +21,7 @@ import pandas as pd
 # Carregue seu DataFrame aqui
 #url = 'https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SGL/2022/uf=BA/lote=1/part-00000-ecd4fc79-1113-4c73-9917-0f83aa9e0235.c000.csv'
 df = pd.read_csv(arquivo, sep=';', dtype=dtypes, on_bad_lines='skip')
+#print(df)
 
 # Função para atualizar a tabela com base nos filtros
 def atualizar_tabela():
@@ -38,10 +39,11 @@ def atualizar_tabela():
     filtro_racaCor = df['racaCor'] == racaCor_selecionado
     filtro_idade = df['idade'] == idade_selecionado
 
-    resultados_filtrados = df[filtro_sintomas & filtro_profissional_saude & filtro_racaCor & filtro_idade]
+    #resultados_filtrados = df[filtro_sintomas & filtro_profissional_saude & filtro_racaCor & filtro_idade]
+
+    resultados_filtrados = df[filtro_sintomas | filtro_profissional_saude | filtro_racaCor | filtro_idade]
 
     #print("Número de resultados encontrados:", len(resultados_filtrados))
-    
 
     # Limpar a tabela existente
     for i in tree.get_children():
@@ -107,9 +109,25 @@ combo_racaCor = ttk.Combobox(root, values=list(racaCor_unicos), state="readonly"
 combo_racaCor.set("Selecione uma Raça/Cor")
 combo_racaCor.grid(row=0, column=3, sticky="w")
 
+# idade_unicos = set(df['idade'].values.tolist())
+
+# # Remover duplicatas do conjunto
+# idade_unicos.discard('NaN')
+
+# # Adicionar um único valor 'NaN' de volta
+# idade_unicos.add('NaN')
+
+# combo_idade = ttk.Combobox(root, values=list(idade_unicos), state="readonly")
+# combo_idade.set("Selecione uma Idade")
+# combo_idade.grid(row=0, column=4, sticky="w")
+
 # idade = df['idade'].unique()
 # combo_idade = ttk.Combobox(root, values=idade, state="readonly")
 idade_unicos = set(df['idade'].values.tolist())
+
+if 'NaN' in idade_unicos:
+    idade_unicos.remove('NaN')
+
 combo_idade = ttk.Combobox(root, values=list(idade_unicos), state="readonly")
 combo_idade.set("Selecione uma Idade")
 combo_idade.grid(row=0, column=4, sticky="w")
