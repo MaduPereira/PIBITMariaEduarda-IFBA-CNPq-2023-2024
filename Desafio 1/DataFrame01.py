@@ -1,5 +1,5 @@
 
-url = 'https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SGL/2022/uf=BA/lote=1/part-00000-ecd4fc79-1113-4c73-9917-0f83aa9e0235.c000.csv'
+url = 'https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SGL/2022/uf=BA/lote=1/part-00000-88cb2568-2a83-41dc-ba36-bada9a69e428.c000.csv'
 dtypes = {
     "sintomas":"str",
     "profissionalSaude": "str",
